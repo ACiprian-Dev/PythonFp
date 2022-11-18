@@ -1,6 +1,27 @@
 from validare.validare_numere import valideaza_numar, valideaza_pozitie, valideaza_interval
 
 
+def convertCalculationsDictionaryToDisplayList(calculationsList):
+    '''
+    Transforma lista de numere complexe folosite pentru calcule intr-o lista de numere complexe pentru afisare
+    :param calculationsList: lista de numere complexe folosite pentru calcule
+    :return: returneaza o lista de numere complexe folosite pentru afisare
+    '''
+    newCalculationsList = list(calculationsList.values())
+    displayList = []
+
+    for i in range(getLengthOfList(newCalculationsList)):
+        if newCalculationsList[i].real == 0 and newCalculationsList[i].imag == 0:
+            displayList.append(f"{newCalculationsList[i].real}")
+        elif newCalculationsList[i].real == 0:
+            displayList.append(f'{newCalculationsList[i].imag}i')
+        elif (newCalculationsList[i].imag == 0):
+            displayList.append(f'{newCalculationsList[i].real}')
+        else:
+            displayList.append(f'{newCalculationsList[i].real} + {newCalculationsList[i].imag}i')
+
+    return displayList
+
 def convertCalculationsListToDisplayList(calculationsList):
     '''
     Transforma lista de numere complexe folosite pentru calcule intr-o lista de numere complexe pentru afisare
@@ -37,7 +58,7 @@ def convertCalculationToDisplay(number):
     else:
         return f"{number.real} + {number.imag}i"
 
-def addComplexNumberToList(l, complexNumber):
+def addComplexNumberToList(l, complexNumber, dictLength):
     '''
     adauga un numar complex dat de forma a + bi la lista l
     :param l: lista actuala de numere complexe
@@ -46,10 +67,10 @@ def addComplexNumberToList(l, complexNumber):
     :return: -
     '''
 
-    l.append(complexNumber)
+    l[dictLength["length"] + 1] = complexNumber
+    dictLength["length"] += 1
 
-
-def addComplexNumberAtPosition(l, complexNumber, poz):
+def addComplexNumberAtPosition(l, complexNumber, poz, dictLength):
     '''
     adauga un numar complex de form a + bi in lista l pe pozitia poz
     :param l: lista actuala de numere complexe
@@ -58,10 +79,22 @@ def addComplexNumberAtPosition(l, complexNumber, poz):
     :param poz: pozitia in care trebuie inserat numarul complex
     :return: -
     '''
+    newDict = {}
 
+    for k in l.keys():
+        if(k < poz):
+            newDict[k] = l[k]
+        elif(k==poz):
+            newDict[k] = complexNumber
+            newDict[k + 1] = l[k]
+        elif(k > poz):
+            newDict[k+1] = l[k]
 
+    if(poz >= dictLength["length"]):
+        newDict[dictLength["length"]] = complexNumber
 
-    l.insert(poz, complexNumber)
+    l.update(newDict)
+    dictLength["length"] += 1
 
 def getLengthOfList(l):
     '''
@@ -71,7 +104,7 @@ def getLengthOfList(l):
     '''
     return len(l)
 
-def removeComplexNumberAtPosition(l, poz):
+def removeComplexNumberAtPosition(l, poz, dictionaryLength):
     '''
     Sterge numarul complex de pe pozitia poz (numar intreg) din lista l
     :param l: lista de numere complexe
@@ -89,9 +122,20 @@ def removeComplexNumberAtPosition(l, poz):
         else:
             break
 
-    del l[poz]
+    newDict = {}
 
-def removeComplexNumbersInInterval(l, startInterval, endInterval):
+    for k in l.keys():
+        if(k < poz):
+            newDict[k] = l[k]
+        elif (k == poz):
+            pass
+        elif(k > poz):
+            newDict[k-1] = l[k]
+    l.popitem()
+    l.update(newDict)
+    dictionaryLength["length"] -=1
+
+def removeComplexNumbersInInterval(l, startInterval, endInterval, dictionaryLength):
     '''
     Sterge o subsecventa de numere complexe din lista l
     :param l: lista de numere complexe
@@ -99,9 +143,22 @@ def removeComplexNumbersInInterval(l, startInterval, endInterval):
     :param endInterval: pozitia de final pentru subsecventa
     :return: -
     '''
-    del l[startInterval:endInterval+1]
+    newDict = {}
 
-def replaceAllOccurrencesOfComplexNumber(l, replacement, numberToReplace):
+    for k in l.keys():
+        if(k < startInterval):
+            newDict[k] = l[k]
+        elif(k > startInterval and k <endInterval):
+            pass
+        elif(k > endInterval):
+            newDict[k - (endInterval - startInterval + 1)] = l[k]
+
+    for i in range(endInterval - startInterval + 1):
+        l.popitem()
+    l.update(newDict)
+    dictionaryLength["length"] -= endInterval - startInterval + 1
+
+def replaceAllOccurrencesOfComplexNumber(l, replacement, numberToReplace, dictionaryLength):
     '''
     Inlocuieste toate aparitiile parametrului numberToReplace din lista l cu parametrul replacement
     :param l: lista de numere complexe
@@ -109,12 +166,10 @@ def replaceAllOccurrencesOfComplexNumber(l, replacement, numberToReplace):
     :param numberToReplace: numar complex
     :return: -
     '''
-    replacement = replacement
-    numberToReplace = numberToReplace
 
-    for i in range(getLengthOfList(l)):
-        if(l[i] == numberToReplace):
-            l[i] = replacement
+    for k in l.keys():
+        if(l[k] == numberToReplace):
+            l[k] = replacement
 
 def getImaginaryPartOfNumbers(l, startInterval, endInterval):
     '''
@@ -126,8 +181,12 @@ def getImaginaryPartOfNumbers(l, startInterval, endInterval):
     '''
 
     newList = []
-    for i in range(startInterval, endInterval + 1, 1):
-        newList.append(l[i].imag)
+
+
+    for k in l.keys():
+        if(k >= startInterval and k <= endInterval):
+            newList.append(l[k].imag)
+
     return newList
 
 
@@ -147,9 +206,10 @@ def getListOfNumbersWithModulusLessThan10(l):
     :return: lista de numere complexe
     '''
     newList = []
-    for i in range(getLengthOfList(l)):
-        if(getModulusOfComplexNumber(l[i]) < 10):
-            newList.append(l[i])
+
+    for k in l.keys():
+        if(getModulusOfComplexNumber(l[k]) < 10):
+            newList.append(l[k])
 
     return newList
 
@@ -160,9 +220,11 @@ def getListOfNumbersWithModulus10(l):
     :return: lista de numere complexe
     '''
     newList = []
-    for i in range(getLengthOfList(l)):
-        if(getModulusOfComplexNumber(l[i])==10):
-            newList.append(l[i])
+
+    for k in l.keys():
+        if(getModulusOfComplexNumber(l[k])==10):
+            newList.append(l[k])
+
     return newList
 
 def getSumOfNumbersInInterval(l, startInterval, endInterval):
@@ -174,8 +236,9 @@ def getSumOfNumbersInInterval(l, startInterval, endInterval):
     :return: numar complex
     '''
     suma = 0
-    for i in range(startInterval, endInterval + 1, 1):
-        suma += l[i]
+    for k in l.keys():
+        if(k >= startInterval and k <=endInterval):
+            suma += l[k]
 
     return suma
 
@@ -188,8 +251,9 @@ def getProductOfNumbersInInterval(l, startInterval, endInterval):
     :return: numar complex
     '''
     prod = 1
-    for i in range(startInterval, endInterval + 1, 1):
-        prod *= l[i]
+    for k in l.keys():
+        if(k >= startInterval and k <=endInterval):
+            prod *= l[k]
 
     return prod
 
@@ -219,10 +283,12 @@ def reverseSortByImaginary(l):
     :param l: lista de numere complexe
     :return: lista de numere complexe
     '''
-    newList = createNewListWithSameValues(l)
+    newList = list(l.values())
     newList.sort(reverse=True, key=getImaginary)
 
     return newList
+
+
 
 def isNumberPrime(number):
     '''
@@ -240,40 +306,96 @@ def isNumberPrime(number):
                 prime = False
     return prime
 
-def filterOutPrimeNumbers(l):
+def filterOutPrimeNumbers(l, dictionaryLength):
     '''
     Elimina toate numerele complexe ce au partea reala numar prim din lista l
     :param l: lista de numere complexe
     :return: -
     '''
-    l[:] = [value for value in l if not isNumberPrime(value.real)]
 
-def filterModulusLessThan(l, modulus):
+    newDict = {}
+    newDict.update(l)
+    resultDict = {}
+    for k in l.keys():
+        if isNumberPrime(l[k].real):
+            newDict.pop(k)
+    i = 0
+    for k in newDict.keys():
+        resultDict[i] = newDict[k]
+        i += 1
+
+    for j in range(dictionaryLength["length"] - i + 1):
+        l.popitem()
+    l.update(resultDict)
+    dictionaryLength["length"] = i
+
+def filterModulusLessThan(l, modulus, dictionaryLength):
     '''
     Elimina toate numerele complexe din lista l ce au modulul mai mic decat modulus
     :param l: lista de numere complexe
     :param modulus: int or float
     :return: -
     '''
-    l[:] = [value for value in l if not getModulusOfComplexNumber(value) < modulus]
 
-def filterModulusGreaterThan(l, modulus):
+
+    newDict = {}
+    newDict.update(l)
+    resultDict = {}
+    for k in l.keys():
+        if getModulusOfComplexNumber(l[k]) < modulus:
+            newDict.pop(k)
+    i = 0
+    for k in newDict.keys():
+        resultDict[i] = newDict[k]
+        i += 1
+    for j in range(dictionaryLength["length"] - i):
+        l.popitem()
+    l.update(resultDict)
+    dictionaryLength["length"] = i
+
+def filterModulusGreaterThan(l, modulus, dictionaryLength):
     '''
     Elimina toate numerele complexe din lista l ce au modulul mai mare decat modulus
     :param l: lista de numere complexe
     :param modulus: int or float
     :return: -
     '''
-    l[:] = [value for value in l if not getModulusOfComplexNumber(value) > modulus]
+    newDict = {}
+    newDict.update(l)
+    resultDict = {}
+    for k in l.keys():
+        if getModulusOfComplexNumber(l[k]) > modulus:
+            newDict.pop(k)
+    i = 0
+    for k in newDict.keys():
+        resultDict[i] = newDict[k]
+        i += 1
+    for j in range(dictionaryLength["length"] - i):
+        l.popitem()
+    l.update(resultDict)
+    dictionaryLength["length"] = i
 
-def filterModulusEqual(l, modulus):
+def filterModulusEqual(l, modulus, dictionaryLength):
     '''
     Elimina toate numerele complexe din lista l ce au modulul egal cu modulus
     :param l: lista de numere complexe
     :param modulus: int or float
     :return: -
     '''
-    l[:] = [value for value in l if getModulusOfComplexNumber(value) != modulus]
+    newDict = {}
+    newDict.update(l)
+    resultDict = {}
+    for k in l.keys():
+        if getModulusOfComplexNumber(l[k]) == modulus:
+            newDict.pop(k)
+    i = 0
+    for k in newDict.keys():
+        resultDict[i] = newDict[k]
+        i += 1
+    for j in range(dictionaryLength["length"] - i):
+        l.popitem()
+    l.update(resultDict)
+    dictionaryLength["length"] = i
 
 # def myUndo(lastKnownList):
 #     '''

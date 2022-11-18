@@ -1,15 +1,17 @@
 from infrastructura.lista_repository import addComplexNumberToList, addComplexNumberAtPosition, \
     removeComplexNumberAtPosition, removeComplexNumbersInInterval, replaceAllOccurrencesOfComplexNumber, \
-    convertCalculationsListToDisplayList, getLengthOfList, getImaginaryPartOfNumbers, \
+    convertCalculationsDictionaryToDisplayList, getLengthOfList, getImaginaryPartOfNumbers, \
     getListOfNumbersWithModulusLessThan10, getListOfNumbersWithModulus10, getSumOfNumbersInInterval, \
     convertCalculationToDisplay, getProductOfNumbersInInterval, reverseSortByImaginary, filterOutPrimeNumbers, \
-    filterModulusLessThan, filterModulusGreaterThan, filterModulusEqual, createNewListWithSameValues
+    filterModulusLessThan, filterModulusGreaterThan, filterModulusEqual, createNewListWithSameValues, \
+    convertCalculationsListToDisplayList
 from validare.validare_numere import valideaza_numar, valideaza_pozitie, valideaza_numar_de_inlocuit, valideaza_interval
 
 
-def printCurrentList(l):
+def printCurrentList(l, dictionaryLength):
+    newList = convertCalculationsDictionaryToDisplayList(l)
     print("Lista dumneavoastra de numere complexe este urmatoarea:")
-    print(l)
+    print(newList)
 
 
 def printMenu():
@@ -30,18 +32,18 @@ def printMenuAdaugare():
     print("     x pentru a va intoarce in meniul principal")
 
 
-def adaugaNumarComplex(calculationsList):
+def adaugaNumarComplex(calculationsList, dictionaryLength):
     print("Numarul vostru este de forma a + bi, specificati valorile pentru a si b")
     a = input("a = ")
     a = valideaza_numar(a, "a")
     b = input("b = ")
     b = valideaza_numar(b, "b")
 
-    addComplexNumberToList(calculationsList, complex(a,b))
+    addComplexNumberToList(calculationsList, complex(a,b), dictionaryLength)
 
 
 
-def adaugaNumarComplexPePozitie(l):
+def adaugaNumarComplexPePozitie(l, dictionaryLength):
     print(f"Numarul vostru este de forma a + bi, specificati valorile pentru a si b si pozitia pe care doriti sa inserati numarul, iar lungimea actuala a listei este {len(l)}")
     a = input("a = ")
     a = valideaza_numar(a, "a")
@@ -50,19 +52,19 @@ def adaugaNumarComplexPePozitie(l):
     poz = input("pozitia = ")
     poz = valideaza_pozitie(poz, "pozitie")
 
-    addComplexNumberAtPosition(l, complex(a, b),poz)
+    addComplexNumberAtPosition(l, complex(a, b), poz, dictionaryLength)
 
 
 
-def menuAdaugare(calculationsList):
+def menuAdaugare(calculationsList, dictionaryLength):
     printMenuAdaugare()
     n = input().strip()
     if(n=='x'):
         print("Iesim")
     elif(n=='1'):
-        adaugaNumarComplex(calculationsList)
+        adaugaNumarComplex(calculationsList, dictionaryLength)
     elif(n=='2'):
-        adaugaNumarComplexPePozitie(calculationsList)
+        adaugaNumarComplexPePozitie(calculationsList, dictionaryLength)
 
 
 def printMenuModificare():
@@ -73,14 +75,14 @@ def printMenuModificare():
     print("     x pentru a va intoarce in meniul principal")
 
 
-def stergeNumarComplexPePozitie(l):
+def stergeNumarComplexPePozitie(l, dictionaryLength):
     print("Specificati pozitia de pe care doriti sa stergeti numarul complex")
     poz = input("poz = ")
     poz = valideaza_pozitie(poz, "pozitie")
-    removeComplexNumberAtPosition(l,poz)
+    removeComplexNumberAtPosition(l,poz, dictionaryLength)
 
 
-def stergeNumereComplexePeInterval(l):
+def stergeNumereComplexePeInterval(l, dictionaryLength):
     print("Specificati pe ce interval doriti sa stergeti elemente din lista")
     startInterval = input("start interval = ")
     endInterval = input("sfarsit interval = ")
@@ -90,10 +92,10 @@ def stergeNumereComplexePeInterval(l):
 
     startInterval, endInterval = valideaza_interval(lengthOfList, startInterval, endInterval)
 
-    removeComplexNumbersInInterval(l, startInterval, endInterval)
+    removeComplexNumbersInInterval(l, startInterval, endInterval, dictionaryLength)
 
 
-def inlocuiesteToateAparitiileUnuiNumarComplex(l):
+def inlocuiesteToateAparitiileUnuiNumarComplex(l, dictionaryLength):
     print("Specificati ce numar complex doriti sa inlocuiti")
     a = input("Partea reala a numarului de inlocuit = ")
     a = valideaza_numar(a, "a")
@@ -110,21 +112,21 @@ def inlocuiesteToateAparitiileUnuiNumarComplex(l):
     replacement = complex(a, b)
 
 
-    replaceAllOccurrencesOfComplexNumber(l, replacement, numberToReplace)
+    replaceAllOccurrencesOfComplexNumber(l, replacement, numberToReplace, dictionaryLength)
 
 
 
-def menuModificare(l):
+def menuModificare(l, dictionaryLength):
     printMenuModificare()
     n = input().strip()
     if(n=='x'):
         print("Iesim")
     elif(n=='1'):
-        stergeNumarComplexPePozitie(l)
+        stergeNumarComplexPePozitie(l, dictionaryLength)
     elif(n=='2'):
-        stergeNumereComplexePeInterval(l)
+        stergeNumereComplexePeInterval(l, dictionaryLength)
     elif(n=='3'):
-        inlocuiesteToateAparitiileUnuiNumarComplex(l)
+        inlocuiesteToateAparitiileUnuiNumarComplex(l, dictionaryLength)
 
 
 def printMenuCautare():
@@ -170,7 +172,7 @@ def tiparesteNumereleCuModul10(l):
     else:
         print("Nu exista numere complexe cu modul 10 in lista dumneavoastra")
 
-def menuCautare(l):
+def menuCautare(l, dictionaryLength):
     printMenuCautare()
     n = input().strip()
     if(n=='x'):
@@ -223,7 +225,7 @@ def sorteazaDescrescatorDupaParteaImaginara(l):
     print(newList)
 
 
-def menuOperatii(l):
+def menuOperatii(l, dictionaryLength):
     printMenuOperatii()
     n = input().strip()
     if(n=='x'):
@@ -243,8 +245,8 @@ def printMenuFiltrare():
     print("     x pentru a va intoarce in meniul principal")
 
 
-def eliminaNumerelePrime(l):
-    filterOutPrimeNumbers(l)
+def eliminaNumerelePrime(l, dictionaryLength):
+    filterOutPrimeNumbers(l, dictionaryLength)
 
 
 def printMenuFiltrareModul():
@@ -255,49 +257,49 @@ def printMenuFiltrareModul():
     print("     x pentru a va intoarce in meniul principal")
 
 
-def filtrareModulMaiMic(l):
+def filtrareModulMaiMic(l, dictionaryLength):
     print("Va rugam specificati numarul cu care doriti efectuata compararea modulului")
     modul = input("modul = ")
     modul = valideaza_numar(modul, "modul")
-    filterModulusLessThan(l, modul)
+    filterModulusLessThan(l, modul, dictionaryLength)
 
 
-def filtrareModulMaiMare(l):
+def filtrareModulMaiMare(l, dictionaryLength):
     print("Va rugam specificati numarul cu care doriti efectuata compararea modulului")
     modul = input("modul = ")
     modul = valideaza_numar(modul, "modul")
-    filterModulusGreaterThan(l, modul)
+    filterModulusGreaterThan(l, modul, dictionaryLength)
 
 
-def filtrareModulEgal(l):
+def filtrareModulEgal(l, dictionaryLength):
     print("Va rugam specificati numarul cu care doriti efectuata compararea modulului")
     modul = input("modul = ")
     modul = valideaza_numar(modul, "modul")
-    filterModulusEqual(l, modul)
+    filterModulusEqual(l, modul, dictionaryLength)
 
 
-def menuFiltrareModul(l):
+def menuFiltrareModul(l, dictionaryLength):
     printMenuFiltrareModul()
     n = input().strip()
     if(n=='x'):
         print("Iesim")
     elif(n=='1'):
-        filtrareModulMaiMic(l)
+        filtrareModulMaiMic(l, dictionaryLength)
     elif(n=='2'):
-        filtrareModulMaiMare(l)
+        filtrareModulMaiMare(l, dictionaryLength)
     elif(n=='3'):
-        filtrareModulEgal(l)
+        filtrareModulEgal(l, dictionaryLength)
 
 
-def menuFiltrare(l):
+def menuFiltrare(l, dictionaryLength):
     printMenuFiltrare()
     n = input().strip()
     if(n=='x'):
         print("Iesim")
     elif(n=='1'):
-        eliminaNumerelePrime(l)
+        eliminaNumerelePrime(l, dictionaryLength)
     elif(n=='2'):
-        menuFiltrareModul(l)
+        menuFiltrareModul(l, dictionaryLength)
 
 
 def meniu():
@@ -305,7 +307,7 @@ def meniu():
     calculationsList = [complex(2, 5), complex(3, 6), complex(10, 0), complex(15, 2), complex(100, 1), complex(1, 0),
                         complex(1), complex(1), complex(1), complex(1), complex(8, 6)]
 
-    calculationsDict = {
+    calculationsDictionary = {
         0: complex(2, 5),
         1: complex(3, 6),
         2: complex(10, 0),
@@ -318,37 +320,51 @@ def meniu():
         9: complex(1),
         10: complex(8, 6)
     }
-    lastKnownList = createNewListWithSameValues(calculationsList)
-    intermediatteList = []
-    displayList = convertCalculationsListToDisplayList(calculationsList)
+    dictionaryLength = { "length": 11}
+
+
+    lastKnownDictionary = {}
+    lastKnownDictionary.update(calculationsDictionary)
+    intermediatteDictionary = {}
+
     a = 0
     while not finish:
-        displayList = convertCalculationsListToDisplayList(calculationsList)
-        printCurrentList(displayList)
-        intermediatteList = createNewListWithSameValues(calculationsList)
-        printMenu()
-        m = input().strip()
 
+        printCurrentList(calculationsDictionary, dictionaryLength)
+
+        intermediatteDictionary.update(calculationsDictionary)
+        #printMenu()
+        print("Introduceti comanda dorita")
+        m = input().strip()
+        words = m.split()
+        print("Fucker", words)
 
         if(m == 'x'):
             exit()
         elif(m=='+'):
-            menuAdaugare(calculationsList)
-            lastKnownList = createNewListWithSameValues(intermediatteList)
+            menuAdaugare(calculationsDictionary, dictionaryLength)
+            lastKnownDictionary = {}
+            lastKnownDictionary.update(intermediatteDictionary)
+            print("fuck off", lastKnownDictionary)
         elif(m=='-'):
-            menuModificare(calculationsList)
-            lastKnownList = createNewListWithSameValues(intermediatteList)
+            menuModificare(calculationsDictionary, dictionaryLength)
+            lastKnownDictionary = {}
+            lastKnownDictionary.update(intermediatteDictionary)
         elif(m=='?'):
-            menuCautare(calculationsList)
-            lastKnownList = createNewListWithSameValues(intermediatteList)
+            menuCautare(calculationsDictionary, dictionaryLength)
+            lastKnownDictionary = {}
+            lastKnownDictionary.update(intermediatteDictionary)
         elif(m=='*'):
-            menuOperatii(calculationsList)
-            lastKnownList = createNewListWithSameValues(intermediatteList)
+            menuOperatii(calculationsDictionary, dictionaryLength)
+            lastKnownDictionary = {}
+            lastKnownDictionary.update(intermediatteDictionary)
         elif(m=='/'):
-            menuFiltrare(calculationsList)
-            lastKnownList = createNewListWithSameValues(intermediatteList)
+            menuFiltrare(calculationsDictionary, dictionaryLength)
+            lastKnownDictionary = {}
+            lastKnownDictionary.update(intermediatteDictionary)
         elif(m=='u'):
-            calculationsList = createNewListWithSameValues(lastKnownList)
+            calculationsDictionary = {}
+            calculationsDictionary.update(lastKnownDictionary)
 
         else:
             pass
