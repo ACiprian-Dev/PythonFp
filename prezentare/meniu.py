@@ -32,39 +32,17 @@ def printMenuAdaugare():
     print("     x pentru a va intoarce in meniul principal")
 
 
-def adaugaNumarComplex(calculationsList, dictionaryLength):
-    print("Numarul vostru este de forma a + bi, specificati valorile pentru a si b")
-    a = input("a = ")
-    a = valideaza_numar(a, "a")
-    b = input("b = ")
-    b = valideaza_numar(b, "b")
+def adaugaNumarComplex(calculationsList, dictionaryLength, a, b):
+
 
     addComplexNumberToList(calculationsList, complex(a,b), dictionaryLength)
 
 
 
-def adaugaNumarComplexPePozitie(l, dictionaryLength):
-    print(f"Numarul vostru este de forma a + bi, specificati valorile pentru a si b si pozitia pe care doriti sa inserati numarul, iar lungimea actuala a listei este {len(l)}")
-    a = input("a = ")
-    a = valideaza_numar(a, "a")
-    b = input("b = ")
-    b = valideaza_numar(b, "b")
-    poz = input("pozitia = ")
-    poz = valideaza_pozitie(poz, "pozitie")
+def adaugaNumarComplexPePozitie(l, dictionaryLength, a, b, poz):
+
 
     addComplexNumberAtPosition(l, complex(a, b), poz, dictionaryLength)
-
-
-
-def menuAdaugare(calculationsList, dictionaryLength):
-    printMenuAdaugare()
-    n = input().strip()
-    if(n=='x'):
-        print("Iesim")
-    elif(n=='1'):
-        adaugaNumarComplex(calculationsList, dictionaryLength)
-    elif(n=='2'):
-        adaugaNumarComplexPePozitie(calculationsList, dictionaryLength)
 
 
 def printMenuModificare():
@@ -75,41 +53,19 @@ def printMenuModificare():
     print("     x pentru a va intoarce in meniul principal")
 
 
-def stergeNumarComplexPePozitie(l, dictionaryLength):
-    print("Specificati pozitia de pe care doriti sa stergeti numarul complex")
-    poz = input("poz = ")
-    poz = valideaza_pozitie(poz, "pozitie")
+def stergeNumarComplexPePozitie(l, dictionaryLength, poz):
     removeComplexNumberAtPosition(l,poz, dictionaryLength)
 
 
-def stergeNumereComplexePeInterval(l, dictionaryLength):
-    print("Specificati pe ce interval doriti sa stergeti elemente din lista")
-    startInterval = input("start interval = ")
-    endInterval = input("sfarsit interval = ")
-    startInterval = valideaza_pozitie(startInterval, "start interval")
-    endInterval = valideaza_pozitie(endInterval, "sfarsit interval")
-    lengthOfList = getLengthOfList(l)
+def stergeNumereComplexePeInterval(l, dictionaryLength, startInterval, endInterval):
 
-    startInterval, endInterval = valideaza_interval(lengthOfList, startInterval, endInterval)
+
 
     removeComplexNumbersInInterval(l, startInterval, endInterval, dictionaryLength)
 
 
-def inlocuiesteToateAparitiileUnuiNumarComplex(l, dictionaryLength):
-    print("Specificati ce numar complex doriti sa inlocuiti")
-    a = input("Partea reala a numarului de inlocuit = ")
-    a = valideaza_numar(a, "a")
-    b = input("Partea imaginara a numarului de inlocuit = ")
-    b = valideaza_numar(b, "b")
-    numberToReplace = complex(a, b)
-    numberToReplace = valideaza_numar_de_inlocuit(l, numberToReplace)
+def inlocuiesteToateAparitiileUnuiNumarComplex(l, dictionaryLength, replacement, numberToReplace):
 
-    print("Specificati cu ce numar complex ati dori sa inlocuiti acest numar")
-    a = input("Partea reala a inlocuitorului = ")
-    a = valideaza_numar(a, "a")
-    b = input("Partea imaginara a inlocuitorului = ")
-    b = valideaza_numar(b, "b")
-    replacement = complex(a, b)
 
 
     replaceAllOccurrencesOfComplexNumber(l, replacement, numberToReplace, dictionaryLength)
@@ -137,15 +93,7 @@ def printMenuCautare():
     print("     x pentru a va intoarce in meniul principal")
 
 
-def tiparesteParteaImaginara(l):
-    print("Specificati pe ce interval din lista doriti sa tipariti partea imaginara")
-    startInterval = input("start interval = ")
-    endInterval = input("sfarsit interval = ")
-    startInterval = valideaza_pozitie(startInterval, "start interval")
-    endInterval = valideaza_pozitie(endInterval, "sfarsit interval")
-    lengthOfList = getLengthOfList(l)
-
-    startInterval, endInterval = valideaza_interval(lengthOfList, startInterval, endInterval)
+def tiparesteParteaImaginara(l, startInterval, endInterval):
 
     newList = getImaginaryPartOfNumbers(l, startInterval, endInterval)
     print("Lista cu partea imaginara a numerelor din secventa dumneavoastra este urmatoarea:")
@@ -193,27 +141,12 @@ def printMenuOperatii():
     print("     x pentru a va intoarce in meniul principal")
 
 
-def tiparesteSumaNumerelor(l):
-    startInterval = input("start interval = ")
-    endInterval = input("sfarsit interval = ")
-    startInterval = valideaza_pozitie(startInterval, "start interval")
-    endInterval = valideaza_pozitie(endInterval, "sfarsit interval")
-    lengthOfList = getLengthOfList(l)
-
-    startInterval, endInterval = valideaza_interval(lengthOfList, startInterval, endInterval)
-
+def tiparesteSumaNumerelor(l, startInterval, endInterval):
     print("Suma dumneavoastra este urmatoarea:")
     print(convertCalculationToDisplay(getSumOfNumbersInInterval(l, startInterval, endInterval)))
 
 
-def tiparesteProdusulNumerelor(l):
-    startInterval = input("start interval = ")
-    endInterval = input("sfarsit interval = ")
-    startInterval = valideaza_pozitie(startInterval, "start interval")
-    endInterval = valideaza_pozitie(endInterval, "sfarsit interval")
-    lengthOfList = getLengthOfList(l)
-
-    startInterval, endInterval = valideaza_interval(lengthOfList, startInterval, endInterval)
+def tiparesteProdusulNumerelor(l, startInterval, endInterval):
 
     print("Produsul dumneavoastra este urmatorul:")
     print(convertCalculationToDisplay(getProductOfNumbersInInterval(l, startInterval, endInterval)))
@@ -257,24 +190,15 @@ def printMenuFiltrareModul():
     print("     x pentru a va intoarce in meniul principal")
 
 
-def filtrareModulMaiMic(l, dictionaryLength):
-    print("Va rugam specificati numarul cu care doriti efectuata compararea modulului")
-    modul = input("modul = ")
-    modul = valideaza_numar(modul, "modul")
+def filtrareModulMaiMic(l, dictionaryLength, modul):
     filterModulusLessThan(l, modul, dictionaryLength)
 
 
-def filtrareModulMaiMare(l, dictionaryLength):
-    print("Va rugam specificati numarul cu care doriti efectuata compararea modulului")
-    modul = input("modul = ")
-    modul = valideaza_numar(modul, "modul")
+def filtrareModulMaiMare(l, dictionaryLength, modul):
     filterModulusGreaterThan(l, modul, dictionaryLength)
 
 
-def filtrareModulEgal(l, dictionaryLength):
-    print("Va rugam specificati numarul cu care doriti efectuata compararea modulului")
-    modul = input("modul = ")
-    modul = valideaza_numar(modul, "modul")
+def filtrareModulEgal(l, dictionaryLength, modul):
     filterModulusEqual(l, modul, dictionaryLength)
 
 
@@ -304,8 +228,6 @@ def menuFiltrare(l, dictionaryLength):
 
 def meniu():
     finish = False
-    calculationsList = [complex(2, 5), complex(3, 6), complex(10, 0), complex(15, 2), complex(100, 1), complex(1, 0),
-                        complex(1), complex(1), complex(1), complex(1), complex(8, 6)]
 
     calculationsDictionary = {
         0: complex(2, 5),
@@ -337,37 +259,196 @@ def meniu():
         print("Introduceti comanda dorita")
         m = input().strip()
         words = m.split()
-        print("Fucker", words)
+        words[0].lower()
 
-        if(m == 'x'):
-            exit()
-        elif(m=='+'):
-            menuAdaugare(calculationsDictionary, dictionaryLength)
-            lastKnownDictionary = {}
-            lastKnownDictionary.update(intermediatteDictionary)
-            print("fuck off", lastKnownDictionary)
-        elif(m=='-'):
-            menuModificare(calculationsDictionary, dictionaryLength)
-            lastKnownDictionary = {}
-            lastKnownDictionary.update(intermediatteDictionary)
-        elif(m=='?'):
-            menuCautare(calculationsDictionary, dictionaryLength)
-            lastKnownDictionary = {}
-            lastKnownDictionary.update(intermediatteDictionary)
-        elif(m=='*'):
-            menuOperatii(calculationsDictionary, dictionaryLength)
-            lastKnownDictionary = {}
-            lastKnownDictionary.update(intermediatteDictionary)
-        elif(m=='/'):
-            menuFiltrare(calculationsDictionary, dictionaryLength)
-            lastKnownDictionary = {}
-            lastKnownDictionary.update(intermediatteDictionary)
-        elif(m=='u'):
-            calculationsDictionary = {}
-            calculationsDictionary.update(lastKnownDictionary)
+        match words[0]:
+            case "exit":
+                exit()
+            case "add":
+                numbers = words[1].split('+')
+                if(len(numbers) <= 1):
+                    print("\033[91mComanda invalida, va rugam introduceti un numar \033[0m")
+                else:
+                    a = numbers[0]
+                    b = numbers[1][:-1]
 
-        else:
-            pass
+                    a = valideaza_numar(a, "a")
+                    b = valideaza_numar(b, "b")
+                    if a is not None and b is not None:
+                        adaugaNumarComplex(calculationsDictionary, dictionaryLength, a, b)
+                    lastKnownDictionary = {}
+                    lastKnownDictionary.update(intermediatteDictionary)
+            case "add_at":
+                temp = words[1].split(',')
+                poz = temp[0]
+                poz = valideaza_pozitie(poz, "pozitie")
+                numbers = temp[1].split('+')
+                if (len(numbers) <= 1):
+                    print("\033[91mComanda invalida, va rugam introduceti un numar \033[0m")
+                else:
+                    a = numbers[0]
+                    b = numbers[1][:-1]
+
+                    a = valideaza_numar(a, "a")
+                    b = valideaza_numar(b, "b")
+                    if a is not None and b is not None and poz is not None:
+                        adaugaNumarComplexPePozitie(calculationsDictionary, dictionaryLength, a, b, poz)
+                    lastKnownDictionary = {}
+                    lastKnownDictionary.update(intermediatteDictionary)
+            case "del_at":
+                pozitie = words[1]
+                pozitie = valideaza_numar(pozitie, "number")
+                if pozitie is not None:
+                    stergeNumarComplexPePozitie(calculationsDictionary, dictionaryLength, pozitie)
+            case "del":
+                temp = words[1].split('-')
+                if len(temp) <= 1:
+                    print("Va rog introduceti un interval")
+                else:
+                    startInterval = temp[0]
+                    endInterval = temp[1]
+                    startInterval = valideaza_pozitie(startInterval, "start interval")
+                    endInterval = valideaza_pozitie(endInterval, "sfarsit interval")
+                    startInterval, endInterval = valideaza_interval(dictionaryLength, startInterval, endInterval)
+                    if startInterval is not None and endInterval is not None:
+                        stergeNumereComplexePeInterval(calculationsDictionary, dictionaryLength, startInterval, endInterval)
+                        lastKnownDictionary = {}
+                        lastKnownDictionary.update(intermediatteDictionary)
+            case "replace":
+                numberToReplace = words[1]
+                replacement = words[2]
+                numbers = words[1].split('+')
+
+                a = numbers[0]
+                b = numbers[1][:-1]
+                print(b)
+                a = valideaza_numar(a, "a")
+                b = valideaza_numar(b, "b")
+
+                numberToReplace = complex(a, b)
+                numberToReplace = valideaza_numar_de_inlocuit(calculationsDictionary, numberToReplace)
+                print("wtf", numberToReplace)
+                numbers = words[2].split('+')
+
+                a = numbers[0]
+                b = numbers[1][:-1]
+
+                a = valideaza_numar(a, "a")
+                b = valideaza_numar(b, "b")
+                replacement = complex(a, b)
+                if replacement is not None and numberToReplace is not None:
+                    inlocuiesteToateAparitiileUnuiNumarComplex(calculationsDictionary, dictionaryLength, replacement, numberToReplace)
+                    lastKnownDictionary = {}
+                    lastKnownDictionary.update(intermediatteDictionary)
+
+            case "imaginary":
+                temp = words[1].split('-')
+                if len(temp) <= 1:
+                    print("Va rog introduceti un interval")
+                else:
+                    startInterval = temp[0]
+                    endInterval = temp[1]
+                    startInterval = valideaza_pozitie(startInterval, "start interval")
+                    endInterval = valideaza_pozitie(endInterval, "sfarsit interval")
+                    startInterval, endInterval = valideaza_interval(dictionaryLength["length"], startInterval, endInterval)
+                    if startInterval is not None and endInterval is not None:
+                        tiparesteParteaImaginara(calculationsDictionary, startInterval, endInterval)
+                        lastKnownDictionary = {}
+                        lastKnownDictionary.update(intermediatteDictionary)
+            case "modulos<10":
+                tiparesteNumereleCuModulSub10(calculationsDictionary)
+            case "modulos=10":
+                tiparesteNumereleCuModul10(calculationsDictionary)
+            case "sum":
+                temp = words[1].split('-')
+                if len(temp) <= 1:
+                    print("Va rog introduceti un interval")
+                else:
+                    startInterval = temp[0]
+                    endInterval = temp[1]
+                    startInterval = valideaza_pozitie(startInterval, "start interval")
+                    endInterval = valideaza_pozitie(endInterval, "sfarsit interval")
+                    startInterval, endInterval = valideaza_interval(dictionaryLength["length"], startInterval, endInterval)
+                    if startInterval is not None and endInterval is not None:
+                        tiparesteSumaNumerelor(calculationsDictionary, startInterval, endInterval)
+                        lastKnownDictionary = {}
+                        lastKnownDictionary.update(intermediatteDictionary)
+            case "product":
+                temp = words[1].split('-')
+                if len(temp) <= 1:
+                    print("Va rog introduceti un interval")
+                else:
+                    startInterval = temp[0]
+                    endInterval = temp[1]
+                    startInterval = valideaza_pozitie(startInterval, "start interval")
+                    endInterval = valideaza_pozitie(endInterval, "sfarsit interval")
+                    startInterval, endInterval = valideaza_interval(dictionaryLength["length"], startInterval, endInterval)
+                    if startInterval is not None and endInterval is not None:
+                        tiparesteProdusulNumerelor(calculationsDictionary, startInterval, endInterval)
+                        lastKnownDictionary = {}
+                        lastKnownDictionary.update(intermediatteDictionary)
+            case "sort":
+                sorteazaDescrescatorDupaParteaImaginara(calculationsDictionary)
+                lastKnownDictionary = {}
+                lastKnownDictionary.update(intermediatteDictionary)
+            case "filtru_prim":
+                eliminaNumerelePrime(calculationsDictionary, dictionaryLength)
+                lastKnownDictionary = {}
+                lastKnownDictionary.update(intermediatteDictionary)
+            case "modul<":
+                modul = words[1]
+                modul = valideaza_numar(modul, "modul")
+                if modul is not None:
+                    filtrareModulMaiMic(calculationsDictionary, dictionaryLength, modul)
+                    lastKnownDictionary = {}
+                    lastKnownDictionary.update(intermediatteDictionary)
+            case "modul>":
+                modul = words[1]
+                modul = valideaza_numar(modul, "modul")
+                if modul is not None:
+                    filtrareModulMaiMare(calculationsDictionary, dictionaryLength, modul)
+                    lastKnownDictionary = {}
+                    lastKnownDictionary.update(intermediatteDictionary)
+            case "modul=":
+                modul = words[1]
+                modul = valideaza_numar(modul, "modul")
+                if modul is not None:
+                    filtrareModulEgal(calculationsDictionary, dictionaryLength, modul)
+                    lastKnownDictionary = {}
+                    lastKnownDictionary.update(intermediatteDictionary)
+            case "undo":
+                calculationsDictionary = {}
+                calculationsDictionary.update(lastKnownDictionary)
+
+        # if(m == 'x'):
+        #     exit()
+        # elif(m=='+'):
+        #     menuAdaugare(calculationsDictionary, dictionaryLength)
+        #     lastKnownDictionary = {}
+        #     lastKnownDictionary.update(intermediatteDictionary)
+        #     print("fuck off", lastKnownDictionary)
+        # elif(m=='-'):
+        #     menuModificare(calculationsDictionary, dictionaryLength)
+        #     lastKnownDictionary = {}
+        #     lastKnownDictionary.update(intermediatteDictionary)
+        # elif(m=='?'):
+        #     menuCautare(calculationsDictionary, dictionaryLength)
+        #     lastKnownDictionary = {}
+        #     lastKnownDictionary.update(intermediatteDictionary)
+        # elif(m=='*'):
+        #     menuOperatii(calculationsDictionary, dictionaryLength)
+        #     lastKnownDictionary = {}
+        #     lastKnownDictionary.update(intermediatteDictionary)
+        # elif(m=='/'):
+        #     menuFiltrare(calculationsDictionary, dictionaryLength)
+        #     lastKnownDictionary = {}
+        #     lastKnownDictionary.update(intermediatteDictionary)
+        # elif(m=='u'):
+        #     calculationsDictionary = {}
+        #     calculationsDictionary.update(lastKnownDictionary)
+        #
+        # else:
+        #     pass
 
 
 

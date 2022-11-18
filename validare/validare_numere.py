@@ -13,10 +13,10 @@ def valideaza_tip_numar(numar):
         except ValueError:
             val = False
 
-    if (type(val) != bool):
+    if type(val) != bool:
         return val
     else:
-        return "Inputul dumneavoastra nu este numar, va rugam introduceti un numar"
+        return "\033[91mInputul dumneavoastra nu este numar, va rugam introduceti un numar\033[0m"
 
 def valideaza_numar(numar, tipDeValidare):
     '''
@@ -25,18 +25,13 @@ def valideaza_numar(numar, tipDeValidare):
     :param tipDeValidare: numele parametrului care este validat
     :return: un numar
     '''
-    running = True
+    temp = valideaza_tip_numar(numar)
+    if type(temp) == str:
+        print(temp)
+    else:
+        return temp
 
-    while running:
-        temp = valideaza_tip_numar(numar)
-        if type(temp) == str:
-            print(temp)
-            numar = input(f"{tipDeValidare} = ")
-        else:
-            numar = temp
-            running = False
 
-    return numar
 
 def valideaza_numar_intreg(numar):
     '''
@@ -51,20 +46,17 @@ def valideaza_numar_intreg(numar):
     if(type(val)!=bool):
         return val
     else:
-        return "Inputul dumneavoastra nu este un numar intreg, va rugam introduceti un numar intreg"
+        return "\033[91mInputul dumneavoastra nu este un numar intreg, va rugam introduceti un numar intreg\033[0m"
 
 def valideaza_pozitie(pozitie, tipDeValidare):
-    running = True
-    while running:
-        temp = valideaza_numar_intreg(pozitie)
-        if type(temp) == str:
-            print(temp)
-            pozitie = input(f"{tipDeValidare} = ")
-        else:
-            pozitie = temp
-            running = False
 
-    return pozitie
+
+    temp = valideaza_tip_numar(pozitie)
+    if type(temp) == str:
+        print(temp)
+    else:
+        return temp
+
 
 def valideaza_interval(lengthOfList, startInterval, endInterval):
     '''
@@ -100,7 +92,7 @@ def valideaza_numar_de_inlocuit(l, numberToReplace):
     :return: numberToReplace
     '''
     while True:
-        if(numberToReplace in l):
+        if(numberToReplace in l.values()):
             break;
         else:
             print("Numarul specificat de dumneavoastra nu exista in lista, va rugam introduceti alt numar")
